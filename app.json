@@ -1,13 +1,33 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/getGoods/getGoods",
+    "pages/personalCenter/personalCenter"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#cdcdcd",
+    "selectedColor": "#5cadff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "工作台",
+        "iconPath": "assets/icon/workbench.png",
+        "selectedIconPath": "assets/icon/workbench-sel.png"
+      },
+      {
+        "pagePath": "pages/personalCenter/personalCenter",
+        "text": "我的",
+        "iconPath": "assets/icon/personal.png",
+        "selectedIconPath": "assets/icon/personal-sel.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

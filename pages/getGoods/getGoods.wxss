@@ -1,0 +1,4 @@
+/* pages/getGoods/getGoods.wxss */
+.card-item {
+  width:calc(100vw - 10px);
+}

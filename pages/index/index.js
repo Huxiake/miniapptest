@@ -12,7 +12,7 @@ Page({
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '../workbench/workbench'
     })
   },
   onLoad: function () {
@@ -49,6 +49,11 @@ Page({
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
+    })
+  },
+  handleGetGoodsList() {
+    wx.navigateTo({
+      url: '../../pages/getGoods/getGoods'
     })
   }
 })

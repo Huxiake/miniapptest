@@ -1,3 +1,9 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "i-icon": "../../modules/iview/icon/index",
+    "i-grid": "../../modules/iview/grid/index",
+    "i-grid-item": "../../modules/iview/grid-item/index",
+    "i-grid-icon": "../../modules/iview/grid-icon/index",
+    "i-grid-label": "../../modules/iview/grid-label/index"
+  }
 }

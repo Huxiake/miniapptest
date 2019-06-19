@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "拿货列表",
+  "usingComponents": {
+    "van-card": "../../modules/vant/card/index",
+    "van-popup": "../../modules/vant/popup/index"
+  }
+}

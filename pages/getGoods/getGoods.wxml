@@ -1,0 +1,23 @@
+<!--pages/getGoods/getGoods.wxml-->
+<view class="container">
+  <van-card
+    num="2"
+    price="58"
+    desc="记得是黑色裤子"
+    title="A108226456"
+    thumb="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0"
+    class="card-item"
+    bindtap="handlePic"
+  />
+  <van-card
+    num="2"
+    price="58"
+    desc="记得是黑色裤子"
+    title="A108226456"
+    thumb="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0"
+    class="card-item"
+  />
+  <van-popup show="{{ showPic }}" bind:close="onClose">
+    <image src="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300"/>
+  </van-popup>
+</view>
