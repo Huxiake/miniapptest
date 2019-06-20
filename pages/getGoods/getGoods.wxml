@@ -1,23 +1,50 @@
 <!--pages/getGoods/getGoods.wxml-->
 <view class="container">
+  <van-search value="{{ value }}" placeholder="请输入搜索关键词" style="width: 100%" />
+  <view class="top-tool">
+    <van-row>
+      <van-col span="16">
+        <van-cell value="" title="市场" value="请选择市场" bind:click="pickerTest" class="pickerCell" />
+      </van-col>
+      <van-col>
+        <van-button size="small" class="selAll-btn">全选</van-button>
+        <van-button type="info" size="small" class="print-btn">操作</van-button>
+        <!-- <van-button plain hairline type="danger" size="small" class="print-btn">缺货</van-button> -->
+      </van-col>
+    </van-row>
+  </view>
+
+  <!-- 循环单元 -->
   <van-card
-    num="2"
-    price="58"
-    desc="记得是黑色裤子"
-    title="A108226456"
-    thumb="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0"
-    class="card-item"
-    bindtap="handlePic"
-  />
-  <van-card
-    num="2"
-    price="58"
-    desc="记得是黑色裤子"
-    title="A108226456"
-    thumb="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0"
-    class="card-item"
-  />
-  <van-popup show="{{ showPic }}" bind:close="onClose">
-    <image src="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300"/>
+    wx:for="{{fakeData}}"
+    wx:key="{{ index }}"
+    data-item="{{ item }}"
+    num="{{ item.Amount }}"
+    price="{{ item.Price }}"
+    desc="{{ item.Remake }}"
+    title="{{ item.GetGoodsNum }}"
+    bindtap="onClickCard"
+    class="card-item {{ selectList[item.Id] ? 'card-item-active' : '' }}"
+  >
+    <view
+      slot="thumb"
+      class="van-card__slot_thumb"
+      bindtap="onClickThumb">
+      <image src="{{ item.Img }}" style="width:100%;height:100%" />
+    </view>
+    <view slot="footer">
+      <van-button plain hairline type="danger" size="mini" style="margin-right:3px">缺货</van-button>
+      <van-button size="mini">完成</van-button>
+    </view>
+  </van-card>
+  <!-- /循环单元 -->
+
+  <!-- 图片弹出层 -->
+  <van-popup show="{{ showPic }}" bind:close="onClose" class="popup-pic">
+    <image src="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300" style="height: 300px;" />
+  </van-popup>
+  <!-- 市场选择弹出层 -->
+  <van-popup show="{{ showPicker }}" position="bottom" bind:close="onClose">
+    <van-picker columns="{{ columns }}" show-toolbar title="选择市场" bind:cancel="onClose" bind:confirm="confirmPicker" />
   </van-popup>
 </view>

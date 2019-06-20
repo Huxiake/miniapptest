@@ -1,4 +1,49 @@
 /* pages/getGoods/getGoods.wxss */
+
+.top-tool {
+  width: calc(100vw);
+}
+
+/* .pickerCell view {
+  padding-bottom: 2px;
+} */
+
+.pickerCell view .van-cell__title {
+  width: 2rem;
+  flex: 0 1 auto;
+}
+
+.pickerCell view .van-cell__value {
+  flex: 0 1 auto;
+}
+
+.print-btn {
+  margin-left: 3px;
+}
+
 .card-item {
-  width:calc(100vw - 10px);
+  width: calc(100vw - 10px);
+  border: 1px dashed #fafafa;
+  margin-bottom: 3px;
+}
+
+.card-item-active {
+  width: calc(100vw - 10px);
+  margin-bottom: 3px;
+  border: 1px dashed #5cadff;
+  /* box-sizing: border-box; */
+}
+
+.popup-pic {
+  width: 300px;
+  height: auto;
+}
+
+.van-card__slot_thumb {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-right: 10px;
+  -webkit-flex: none;
+  flex: none;
 }

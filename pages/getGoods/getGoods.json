@@ -2,6 +2,15 @@
   "navigationBarTitleText": "拿货列表",
   "usingComponents": {
     "van-card": "../../modules/vant/card/index",
-    "van-popup": "../../modules/vant/popup/index"
+    "van-popup": "../../modules/vant/popup/index",
+    "van-search": "../../modules/vant/search/index",
+    "van-button": "../../modules/vant/button/index",
+    "van-picker": "../../modules/vant/picker/index",
+    "van-field": "../../modules/vant/field/index",
+    "van-cell": "../../modules/vant/cell/index",
+    "van-row": "../../modules/vant/row/index",
+    "van-col": "../../modules/vant/col/index",
+    "van-checkbox-group": "../../modules/vant/checkbox-group/index",
+    "van-checkbox": "../../modules/vant/checkbox/index"
   }
 }
