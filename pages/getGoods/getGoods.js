@@ -1,4 +1,6 @@
 // pages/getGoods/getGoods.js
+const util = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -32,7 +34,8 @@ Page({
       'Remake': '七分袖',
       'Img': 'https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0'
     }],
-    selectList: {}
+    selectArr: [],
+    selectObj: {}
   },
 
   /**
@@ -105,16 +108,26 @@ Page({
   onClickCard(e) {
     console.log(e)
     const id = e.currentTarget.dataset.item.Id
-    const selectListItem = "selectList." + id
-    if (this.data.selectList[id] === undefined | this.data.selectList[id] === false) {
+    const arrKey = util.evalKey(this.data.selectArr, id)
+    console.log(arrKey)
+    const selectObjItem = "selectObj." + id
+
+    // 先存入selectObj,用于样式
+    if (this.data.selectObj[id] === undefined | this.data.selectObj[id] === false) {
+      this.data.selectArr.splice(arrKey, 0, id)
+      // 数组中没有这个value，存入数组
       this.setData({
-        [selectListItem]: true
+        [selectObjItem]: true
       })
     } else {
+      // 数组中有这个value，去掉
+      this.data.selectArr.splice(arrKey, 1)
       this.setData({
-        [selectListItem]: false
+        [selectObjItem]: false
       })
     }
+    console.log(this.data.selectObj)
+    console.log(this.data.selectArr)
   },
 
   /**
