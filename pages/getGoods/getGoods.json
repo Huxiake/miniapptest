@@ -8,6 +8,7 @@
     "van-picker": "../../modules/vant/picker/index",
     "van-field": "../../modules/vant/field/index",
     "van-cell": "../../modules/vant/cell/index",
+    "van-cell-group": "../../modules/vant/cell-group/index",
     "van-row": "../../modules/vant/row/index",
     "van-col": "../../modules/vant/col/index",
     "van-checkbox-group": "../../modules/vant/checkbox-group/index",

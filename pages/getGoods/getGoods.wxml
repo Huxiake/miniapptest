@@ -1,14 +1,14 @@
 <!--pages/getGoods/getGoods.wxml-->
 <view class="container">
-  <van-search value="{{ value }}" placeholder="请输入搜索关键词" style="width: 100%" />
+  <van-search value="{{ searchVal }}" placeholder="请输入搜索关键词" style="width: 100%" />
   <view class="top-tool">
     <van-row>
       <van-col span="16">
-        <van-cell value="" title="市场" value="请选择市场" bind:click="pickerTest" class="pickerCell" />
+        <van-cell value="{{ pickerVal }}" title="市场" bind:click="onClickpicker" class="pickerCell" />
       </van-col>
       <van-col>
-        <van-button size="small" class="selAll-btn">全选</van-button>
-        <van-button type="info" size="small" class="print-btn">操作</van-button>
+        <van-button size="small" class="selAll-btn" bindtap="selectAll">全选</van-button>
+        <van-button type="info" size="small" class="print-btn" bindtap="onClickOption">操作</van-button>
         <!-- <van-button plain hairline type="danger" size="small" class="print-btn">缺货</van-button> -->
       </van-col>
     </van-row>
@@ -24,7 +24,7 @@
     desc="{{ item.Remake }}"
     title="{{ item.GetGoodsNum }}"
     bindtap="onClickCard"
-    class="card-item {{ selectList[item.Id] ? 'card-item-active' : '' }}"
+    class="card-item {{ selectObj[item.Id] ? 'card-item-active' : '' }}"
   >
     <view
       slot="thumb"
@@ -43,8 +43,19 @@
   <van-popup show="{{ showPic }}" bind:close="onClose" class="popup-pic">
     <image src="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300" style="height: 300px;" />
   </van-popup>
+
   <!-- 市场选择弹出层 -->
   <van-popup show="{{ showPicker }}" position="bottom" bind:close="onClose">
     <van-picker columns="{{ columns }}" show-toolbar title="选择市场" bind:cancel="onClose" bind:confirm="confirmPicker" />
   </van-popup>
+
+  <!-- 操作选项弹出层 -->
+  <van-popup show="{{ showOption }}" position="bottom" bind:close="onClose">
+    <van-cell-group  class="cell-group">
+      <van-cell value="打印"/>
+      <van-cell value="缺货" class="cell-outStock"/>
+      <van-cell value="取消"/>
+    </van-cell-group>
+  </van-popup>
+
 </view>

@@ -47,3 +47,13 @@
   -webkit-flex: none;
   flex: none;
 }
+
+.cell-group van-cell .van-cell__value{ 
+  margin: 0 auto;
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.cell-outStock .van-cell__value {
+  color: #ed3f14;
+}

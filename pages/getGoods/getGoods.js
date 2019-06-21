@@ -9,7 +9,10 @@ Page({
   data: {
     showPic: false,
     showPicker: false,
-    value: '',
+    showOption: false,
+    selAll: false,
+    searchVal: '',
+    pickerVal: '全部',
     columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
     result: '',
     fakeData: [{
@@ -106,10 +109,8 @@ Page({
    * 点击选择商品卡片
    */
   onClickCard(e) {
-    console.log(e)
     const id = e.currentTarget.dataset.item.Id
     const arrKey = util.evalKey(this.data.selectArr, id)
-    console.log(arrKey)
     const selectObjItem = "selectObj." + id
 
     // 先存入selectObj,用于样式
@@ -126,27 +127,53 @@ Page({
         [selectObjItem]: false
       })
     }
-    console.log(this.data.selectObj)
-    console.log(this.data.selectArr)
   },
 
   /**
    * 关闭popup
    */
   onClose() {
-    console.log("this")
     this.setData({ showPic: false });
     this.setData({ showPicker: false })
+    this.setData({ showOption: false })
   },
 
-  pickerTest() {
+  /**
+   * 打开选择器
+   */
+  onClickpicker() {
     this.setData({ showPicker: true })
   },
 
+  /**
+   * 选择器确认
+   */
   confirmPicker(event) {
     const { picker, value, index } = event.detail
-    console.log(event)
-    console.log(value)
-    this.setData({ showPicker: false})
+    this.setData({ showPicker: false })
+    this.setData({ pickerVal: value})
+  },
+
+  /**
+   * 打开操作 
+   */
+  onClickOption() {
+    this.setData({ showOption: true })
+  },
+
+  /**
+   * 全选
+   */
+  selectAll() {
+    const Arr = this.data.fakeData
+    const len = Arr.length
+    var selObj_temp = {}
+    for (let i = 0; i < len; i++) {
+      selObj_temp[Arr[i].Id] = !this.data.selAll
+    }
+    this.setData({
+      selectObj: selObj_temp,
+      selAll: !this.data.selAll
+    })
   }
 })
