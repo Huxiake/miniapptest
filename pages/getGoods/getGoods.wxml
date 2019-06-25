@@ -16,11 +16,11 @@
 
   <!-- 循环单元 -->
   <van-card
-    wx:for="{{fakeData}}"
+    wx:for="{{listData}}"
     wx:key="{{ index }}"
     data-item="{{ item }}"
     num="{{ item.Amount }}"
-    price="{{ item.Price }}"
+    price="{{ item.ErpSku.ErpSpu.Price }}"
     desc="{{ item.Remake }}"
     title="{{ item.GetGoodsNum }}"
     bindtap="onClickCard"
@@ -30,7 +30,7 @@
       slot="thumb"
       class="van-card__slot_thumb"
       bindtap="onClickThumb">
-      <image src="{{ item.Img }}" style="width:100%;height:100%" />
+      <image src="{{ item.ErpSku.ErpSpu.Img }}" style="width:100%;height:100%" />
     </view>
     <view slot="footer">
       <van-button plain hairline type="danger" size="mini" style="margin-right:3px">缺货</van-button>

@@ -15,6 +15,7 @@ Page({
     pickerVal: '全部',
     columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
     result: '',
+    listData: [],
     fakeData: [{
       'Id': '1321',
       'GetGoodsNum': 'A12345678',
@@ -45,10 +46,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var jwt = ''
+    try {
+      var value = wx.getStorageSync('jwt')
+      if (value) {
+        jwt = value
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    console.log(jwt)
     wx.vrequest({
       url: 'http://39.108.105.43:8080/v1/getgoods/getGetGoodsList',
+      header: {
+        'Authorization': 'Bearer ' + jwt
+      },
       success: res => {
-        console.log('data=', res.data);
+        var dataJSON = JSON.parse(res.data)
+        if (dataJSON.success) {
+          this.setData({
+            listData: dataJSON.data.rows
+          })
+        }
+        console.log('data=', dataJSON.data);
       }
     })
 
@@ -171,7 +191,7 @@ Page({
    * 全选
    */
   selectAll() {
-    const Arr = this.data.fakeData
+    const Arr = this.data.listData
     const len = Arr.length
     var selObj_temp = {}
     for (let i = 0; i < len; i++) {
