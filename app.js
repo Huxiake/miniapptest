@@ -1,6 +1,12 @@
 //app.js
+require('/utils/v-request.js');
+
 App({
   onLaunch: function () {
+    // 初始化云开发
+    wx.cloud.init({
+      env: 'onekeyerp-st0xb'
+    });
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())

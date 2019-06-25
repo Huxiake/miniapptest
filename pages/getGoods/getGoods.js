@@ -45,6 +45,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.vrequest({
+      url: 'http://39.108.105.43:8080/v1/getgoods/getGetGoodsList',
+      success: res => {
+        console.log('data=', res.data);
+      }
+    })
 
   },
 
