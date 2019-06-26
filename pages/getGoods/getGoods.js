@@ -1,5 +1,6 @@
 // pages/getGoods/getGoods.js
 const util = require('../../utils/util.js')
+const qs = require('qs')
 
 Page({
 
@@ -11,56 +12,33 @@ Page({
     showPicker: false,
     showOption: false,
     selAll: false,
+    picUrl: '',
     searchVal: '',
     pickerVal: '全部',
     columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
     result: '',
     listData: [],
-    fakeData: [{
-      'Id': '1321',
-      'GetGoodsNum': 'A12345678',
-      'Price': '30',
-      'Amount': 1,
-      'Remake': '',
-      'Img': 'https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1038.jpg?x-oss-process=image/resize,h_300,limit_0'
-    },{
-      'Id': '1322',
-      'GetGoodsNum': 'A12345678',
-      'Price': '58',
-      'Amount': 2,
-      'Remake': '条纹的',
-      'Img': 'https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1037.jpg?x-oss-process=image/resize,h_300,limit_0'
-    },{
-      'Id': '1323',
-      'GetGoodsNum': 'A12345678',
-      'Price': '26',
-      'Amount': 5,
-      'Remake': '七分袖',
-      'Img': 'https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300,limit_0'
-    }],
     selectArr: [],
-    selectObj: {}
+    selectObj: {},
+    conditions: {
+      market: ''
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var jwt = ''
-    try {
-      var value = wx.getStorageSync('jwt')
-      if (value) {
-        jwt = value
-      }
-    } catch (e) {
-      console.log(e)
-    }
-    console.log(jwt)
+    this.getList()
+  },
+
+  /**
+   * 获取拿货列表函数
+   */
+  getList() {
+    var cond = qs.stringify(this.data.conditions)
     wx.vrequest({
-      url: 'http://39.108.105.43:8080/v1/getgoods/getGetGoodsList',
-      header: {
-        'Authorization': 'Bearer ' + jwt
-      },
+      url: 'http://39.108.105.43:8080/v1/getgoods/getGetGoodsList?' + cond,
       success: res => {
         var dataJSON = JSON.parse(res.data)
         if (dataJSON.success) {
@@ -71,63 +49,15 @@ Page({
         console.log('data=', dataJSON.data);
       }
     })
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   },
 
   /**
    * 点击商品图片事件
    */
-  onClickThumb() {
-    console.log("111")
+  onClickThumb(e) {
+    console.log(e)
+    var img = e.currentTarget.dataset.img
+    this.setData({ picUrl: img })
     this.setData({ showPic: true });
   },
 
@@ -135,23 +65,30 @@ Page({
    * 点击选择商品卡片
    */
   onClickCard(e) {
-    const id = e.currentTarget.dataset.item.Id
-    const arrKey = util.evalKey(this.data.selectArr, id)
-    const selectObjItem = "selectObj." + id
+    // if (e.target.)
+    // console.log(e.target.dataset.item.Id)
+    if (e.target.dataset.item.Id) {
+      console.log('yes')
+    }
+    if (e.target.dataset != {}) {
+      const id = e.currentTarget.dataset.item.Id
+      const arrKey = util.evalKey(this.data.selectArr, id)
+      const selectObjItem = "selectObj." + id
 
-    // 先存入selectObj,用于样式
-    if (this.data.selectObj[id] === undefined | this.data.selectObj[id] === false) {
-      this.data.selectArr.splice(arrKey, 0, id)
-      // 数组中没有这个value，存入数组
-      this.setData({
-        [selectObjItem]: true
-      })
-    } else {
-      // 数组中有这个value，去掉
-      this.data.selectArr.splice(arrKey, 1)
-      this.setData({
-        [selectObjItem]: false
-      })
+      // 先存入selectObj,用于样式
+      if (this.data.selectObj[id] === undefined | this.data.selectObj[id] === false) {
+        this.data.selectArr.splice(arrKey, 0, id)
+        // 数组中没有这个value，存入数组
+        this.setData({
+          [selectObjItem]: true
+        })
+      } else {
+        // 数组中有这个value，去掉
+        this.data.selectArr.splice(arrKey, 1)
+        this.setData({
+          [selectObjItem]: false
+        })
+      }
     }
   },
 
@@ -175,7 +112,8 @@ Page({
    * 选择器确认
    */
   confirmPicker(event) {
-    const { picker, value, index } = event.detail
+    console.log(event)
+    const { value, index } = event.detail
     this.setData({ showPicker: false })
     this.setData({ pickerVal: value})
   },
@@ -185,6 +123,13 @@ Page({
    */
   onClickOption() {
     this.setData({ showOption: true })
+  },
+
+  /**
+   * 取消操作
+   */
+  cancelOption() {
+    this.setData({ showOption: false })
   },
 
   /**

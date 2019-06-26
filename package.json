@@ -1,0 +1,24 @@
+{
+  "name": "xkerp-miniapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "miniprogram-sm-crypto": "0.0.6",
+    "qs": "^6.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Huxiake/miniapptest.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Huxiake/miniapptest/issues"
+  },
+  "homepage": "https://github.com/Huxiake/miniapptest#readme"
+}

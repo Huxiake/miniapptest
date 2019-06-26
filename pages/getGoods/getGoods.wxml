@@ -21,16 +21,22 @@
     data-item="{{ item }}"
     num="{{ item.Amount }}"
     price="{{ item.ErpSku.ErpSpu.Price }}"
-    desc="{{ item.Remake }}"
+    tag="{{ item.ErpSku.Color }} {{ item.ErpSku.Size }}"
     title="{{ item.GetGoodsNum }}"
     bindtap="onClickCard"
     class="card-item {{ selectObj[item.Id] ? 'card-item-active' : '' }}"
+    lazy-load
   >
     <view
       slot="thumb"
+      data-img="{{ item.ErpSku.ErpSpu.Img }}"
       class="van-card__slot_thumb"
       bindtap="onClickThumb">
       <image src="{{ item.ErpSku.ErpSpu.Img }}" style="width:100%;height:100%" />
+    </view>
+    <view
+      slot="desc">
+      <van-tag>{{ item.OrderNum }}</van-tag>
     </view>
     <view slot="footer">
       <van-button plain hairline type="danger" size="mini" style="margin-right:3px">缺货</van-button>
@@ -41,7 +47,7 @@
 
   <!-- 图片弹出层 -->
   <van-popup show="{{ showPic }}" bind:close="onClose" class="popup-pic">
-    <image src="https://xkerp-pic.oss-cn-shenzhen.aliyuncs.com/A1036.jpg?x-oss-process=image/resize,h_300" style="height: 300px;" />
+    <image src="{{ picUrl }}" style="height: 300px;width:300px;" />
   </van-popup>
 
   <!-- 市场选择弹出层 -->
@@ -54,7 +60,7 @@
     <van-cell-group  class="cell-group">
       <van-cell value="打印"/>
       <van-cell value="缺货" class="cell-outStock"/>
-      <van-cell value="取消"/>
+      <van-cell value="取消" bindtap="cancelOption"/>
     </van-cell-group>
   </van-popup>
 

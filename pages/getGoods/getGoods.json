@@ -12,6 +12,7 @@
     "van-row": "../../modules/vant/row/index",
     "van-col": "../../modules/vant/col/index",
     "van-checkbox-group": "../../modules/vant/checkbox-group/index",
-    "van-checkbox": "../../modules/vant/checkbox/index"
+    "van-checkbox": "../../modules/vant/checkbox/index",
+    "van-tag": "../../modules/vant/tag/index"
   }
 }

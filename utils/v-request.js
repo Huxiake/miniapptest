@@ -23,6 +23,15 @@ wx.vrequest({
  */
 
 wx.vrequest = function (options) {
+  var jwt = ''
+  try {
+    var value = wx.getStorageSync('jwt')
+    if (value) {
+      jwt = value
+    }
+  } catch (e) {
+    console.log(e)
+  }
   // 默认配置
   const OPT = Object.assign({
     method: 'GET',
@@ -33,7 +42,8 @@ wx.vrequest = function (options) {
   // 默认header
   OPT['header'] = Object.assign({
     'Content-Type': 'application/json',
-    'UserAgent': 'github@guren-cloud/v-request 20181229'
+    'UserAgent': 'github@guren-cloud/v-request 20181229',
+    'Authorization': 'Bearer ' + jwt
   }, options.header);
 
   // 发送的数据
