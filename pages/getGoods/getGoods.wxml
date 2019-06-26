@@ -21,8 +21,7 @@
     data-item="{{ item }}"
     num="{{ item.Amount }}"
     price="{{ item.ErpSku.ErpSpu.Price }}"
-    tag="{{ item.ErpSku.Color }} {{ item.ErpSku.Size }}"
-    title="{{ item.GetGoodsNum }}"
+    title="{{ item.GetGoodsNum }} {{ item.ErpSku.Color }} {{ item.ErpSku.Size }}"
     bindtap="onClickCard"
     class="card-item {{ selectObj[item.Id] ? 'card-item-active' : '' }}"
     lazy-load

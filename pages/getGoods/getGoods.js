@@ -16,6 +16,7 @@ Page({
     searchVal: '',
     pickerVal: '全部',
     columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
+    columnsKey:['','A','B','C','D','E','F','G'],
     result: '',
     listData: [],
     selectArr: [],
@@ -65,12 +66,7 @@ Page({
    * 点击选择商品卡片
    */
   onClickCard(e) {
-    // if (e.target.)
-    // console.log(e.target.dataset.item.Id)
-    if (e.target.dataset.item.Id) {
-      console.log('yes')
-    }
-    if (e.target.dataset != {}) {
+    if (typeof (e.target.dataset.item) != 'undefined') {
       const id = e.currentTarget.dataset.item.Id
       const arrKey = util.evalKey(this.data.selectArr, id)
       const selectObjItem = "selectObj." + id
@@ -114,8 +110,13 @@ Page({
   confirmPicker(event) {
     console.log(event)
     const { value, index } = event.detail
-    this.setData({ showPicker: false })
-    this.setData({ pickerVal: value})
+    this.setData({ 
+      showPicker: false,
+      pickerVal: value
+    })
+    this.data.conditions.market = this.data.columnsKey[index]
+    console.log(this.data.conditions.market)
+    this.getList()
   },
 
   /**
