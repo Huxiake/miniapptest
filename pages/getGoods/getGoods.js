@@ -22,7 +22,8 @@ Page({
     selectArr: [],
     selectObj: {},
     conditions: {
-      market: ''
+      market: '',
+      GoodsStatus: 'Pending'
     }
   },
 
@@ -53,6 +54,37 @@ Page({
   },
 
   /**
+   * 设置为缺货状态
+   */
+  setLack(ids) {
+    var data = '[' + ids.join(',') + ']'
+    console.log(data)
+    wx.vrequest({
+      url: 'http://39.108.105.43:8080/v1/getgoods/markLack?id=' + data,
+      method: 'POST',
+      // dataType: 'json',
+      success: res => {
+        console.log('data=', res.data);
+      }
+    })
+  },
+  /**
+   * 设置为完成状态
+   */
+  setGet(ids) {
+    var data = '[' + ids.join(',') + ']'
+    console.log(data)
+    wx.vrequest({
+      url: 'http://39.108.105.43:8080/v1/getgoods/markGet?id=' + data,
+      method: 'POST',
+      // dataType: 'json',
+      success: res => {
+        console.log('data=', res.data);
+      }
+    })
+  },
+
+  /**
    * 点击商品图片事件
    */
   onClickThumb(e) {
@@ -66,7 +98,7 @@ Page({
    * 点击选择商品卡片
    */
   onClickCard(e) {
-    if (typeof (e.target.dataset.item) != 'undefined') {
+    if (typeof (e.target.dataset.id) === 'undefined') {
       const id = e.currentTarget.dataset.item.Id
       const arrKey = util.evalKey(this.data.selectArr, id)
       const selectObjItem = "selectObj." + id
@@ -86,6 +118,40 @@ Page({
         })
       }
     }
+  },
+
+  /**
+   * 点击缺货
+   */
+  onClickLack(e) {
+    var idArr = []
+    if (typeof (e.target.dataset.id) != 'undefined') {
+      idArr.push(e.currentTarget.dataset.id)
+    } else {
+      console.log('在这里', this.data.selectArr)
+      idArr = this.data.selectArr
+    }
+      this.setLack(idArr)
+      this.setData({
+        showOption: false
+      })
+  },
+
+  /**
+   * 点击完成
+   */
+  onClickGet(e) {
+    var idArr = []
+    if (typeof (e.target.dataset.id) != 'undefined') {
+      idArr.push(e.currentTarget.dataset.id)
+    } else {
+      console.log('在这里', this.data.selectArr)
+      idArr = this.data.selectArr
+    }
+    this.setGet(idArr)
+    this.setData({
+      showOption: false
+    })
   },
 
   /**
@@ -143,6 +209,12 @@ Page({
     for (let i = 0; i < len; i++) {
       selObj_temp[Arr[i].Id] = !this.data.selAll
     }
+    if (!this.data.selAll) {
+      this.data.selectArr = Object.keys(selObj_temp)
+    } else {
+      this.data.selectArr = []
+    }
+    console.log(this.data.selectArr)
     this.setData({
       selectObj: selObj_temp,
       selAll: !this.data.selAll

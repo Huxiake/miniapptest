@@ -38,8 +38,8 @@
       <van-tag>{{ item.OrderNum }}</van-tag>
     </view>
     <view slot="footer">
-      <van-button plain hairline type="danger" size="mini" style="margin-right:3px">缺货</van-button>
-      <van-button size="mini">完成</van-button>
+      <van-button data-id="{{ item.Id }}" plain hairline type="danger" size="mini" style="margin-right:3px" bindtap="onClickLack">缺货</van-button>
+      <van-button data-id="{{ item.Id }}" size="mini" bindtap="onClickGet">完成</van-button>
     </view>
   </van-card>
   <!-- /循环单元 -->
@@ -58,7 +58,8 @@
   <van-popup show="{{ showOption }}" position="bottom" bind:close="onClose">
     <van-cell-group  class="cell-group">
       <van-cell value="打印"/>
-      <van-cell value="缺货" class="cell-outStock"/>
+      <van-cell value="完成" bindtap="onClickGet"/>
+      <van-cell value="缺货" class="cell-outStock" bindtap="onClickLack"/>
       <van-cell value="取消" bindtap="cancelOption"/>
     </van-cell-group>
   </van-popup>
