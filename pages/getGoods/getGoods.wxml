@@ -23,6 +23,7 @@
     price="{{ item.ErpSku.ErpSpu.Price }}"
     title="{{ item.GetGoodsNum }} {{ item.ErpSku.Color }} {{ item.ErpSku.Size }}"
     bindtap="onClickCard"
+    tag="{{ item.IsLack === 1 ? '缺货' : '' }}"
     class="card-item {{ selectObj[item.Id] ? 'card-item-active' : '' }}"
     lazy-load
   >
@@ -38,8 +39,9 @@
       <van-tag>{{ item.OrderNum }}</van-tag>
     </view>
     <view slot="footer">
-      <van-button data-id="{{ item.Id }}" plain hairline type="danger" size="mini" style="margin-right:3px" bindtap="onClickLack">缺货</van-button>
-      <van-button data-id="{{ item.Id }}" size="mini" bindtap="onClickGet">完成</van-button>
+      <van-button data-id="{{ item.Id }}" plain hairline type="danger" size="mini" style="margin-right:5px" bindtap="onClickLack">缺货</van-button>
+      <van-button data-id="{{ item.Id }}" size="mini" style="margin-right:5px" bindtap="onClickGet">完成</van-button>
+      <van-button data-item="{{ item }}" size="mini" bindtap="onClickMore">更多</van-button>
     </view>
   </van-card>
   <!-- /循环单元 -->
@@ -62,6 +64,11 @@
       <van-cell value="缺货" class="cell-outStock" bindtap="onClickLack"/>
       <van-cell value="取消" bindtap="cancelOption"/>
     </van-cell-group>
+  </van-popup>
+
+  <!-- 更多按钮弹出层 -->
+  <van-popup show="{{ showMoreBtn }}" position="bottom" bind:close="onClose">   
+    <van-picker columns="{{ parkGetcolumns }}" show-toolbar title="部分完成" bind:cancel="onClose" bind:confirm="parkGetconfirmPicker" />
   </van-popup>
 
 </view>

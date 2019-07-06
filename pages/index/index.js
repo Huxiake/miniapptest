@@ -19,13 +19,12 @@ Page({
     wx.login({
       success(res) {
         if (res.code) {
-          // console.log('success')
           //发起网络请求
-          wx.vrequest({
-            url: 'http://39.108.105.43:8080/api/mp/login?code=' + res.code,
+          wx.request({
+            url: 'https://onekeyErp.yijiankuajing.com/api/mp/login?code=' + res.code,
             success: res => {
-              var dataJSON = JSON.parse(res.data)
-              console.log(dataJSON)
+              console.log(res)
+              var dataJSON = res.data
               if (dataJSON.success) {
                 wx.setStorage({
                   key: "jwt",

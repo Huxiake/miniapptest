@@ -8,22 +8,25 @@ Page({
    * 页面的初始数据
    */
   data: {
+    jwt: '',
     showPic: false,
     showPicker: false,
     showOption: false,
+    showMoreBtn: false,
     selAll: false,
     picUrl: '',
     searchVal: '',
     pickerVal: '全部',
     columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
     columnsKey:['','A','B','C','D','E','F','G'],
+    parkGetcolumns: [],
     result: '',
     listData: [],
     selectArr: [],
     selectObj: {},
     conditions: {
       market: '',
-      GoodsStatus: 'Pending'
+      GoodsStatus: 'pending'
     }
   },
 
@@ -31,24 +34,43 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getJwt()
     this.getList()
+  },
+  /**
+   * 获取jwt
+   */
+  getJwt() {
+    try {
+      var value = wx.getStorageSync('jwt')
+      if (value) {
+        this.data.jwt = value
+      }
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   /**
-   * 获取拿货列表函数
+   * 获取拿货列表
    */
   getList() {
     var cond = qs.stringify(this.data.conditions)
-    wx.vrequest({
-      url: 'http://39.108.105.43:8080/v1/getgoods/getGetGoodsList?' + cond,
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/getGetGoodsList?' + cond,
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
       success: res => {
-        var dataJSON = JSON.parse(res.data)
+        console.log(res)
+        var dataJSON = res.data
         if (dataJSON.success) {
           this.setData({
             listData: dataJSON.data.rows
           })
         }
-        console.log('data=', dataJSON.data);
+        console.log('data=', dataJSON.data)
       }
     })
   },
@@ -59,27 +81,63 @@ Page({
   setLack(ids) {
     var data = '[' + ids.join(',') + ']'
     console.log(data)
-    wx.vrequest({
-      url: 'http://39.108.105.43:8080/v1/getgoods/markLack?id=' + data,
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markLack?id=' + data,
       method: 'POST',
-      // dataType: 'json',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
       success: res => {
-        console.log('data=', res.data);
+        var dataJSON = res.data
+        if (dataJSON.success) {
+          this.getList()
+        }
       }
     })
   },
+
   /**
    * 设置为完成状态
    */
   setGet(ids) {
     var data = '[' + ids.join(',') + ']'
     console.log(data)
-    wx.vrequest({
-      url: 'http://39.108.105.43:8080/v1/getgoods/markGet?id=' + data,
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markGet?id=' + data,
       method: 'POST',
-      // dataType: 'json',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
       success: res => {
-        console.log('data=', res.data);
+        var dataJSON = res.data
+        if (dataJSON.success) {
+          console.log('1111')
+          this.getList()
+        }
+      }
+    })
+  },
+
+  /**
+   * 设置为部分完成状态
+   */
+  setParkGet(getAmount) {
+    console.log(this.data.selectArr)
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markParkGet?id=' + this.data.selectArr + '&getAmount=' + getAmount,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
+      success: res => {
+        var dataJSON = res.data
+        if (dataJSON.success) {
+          console.log('1111')
+          this.getList()
+        }
       }
     })
   },
@@ -91,7 +149,7 @@ Page({
     console.log(e)
     var img = e.currentTarget.dataset.img
     this.setData({ picUrl: img })
-    this.setData({ showPic: true });
+    this.setData({ showPic: true })
   },
 
   /**
@@ -150,7 +208,28 @@ Page({
     }
     this.setGet(idArr)
     this.setData({
-      showOption: false
+      showOption: false,
+      selectArr: [],
+      selectObj: {},
+      selAll: !this.data.selAll
+    })
+    console.log('selectArr', this.data.selectArr)
+  },
+
+  /**
+   * 点击更多
+   */
+  onClickMore(e) {
+    var idArr = []
+    console.log(e)
+    idArr.push(e.currentTarget.dataset.item.Id)
+    this.data.selectArr = idArr
+    console.log(this.data.selectArr)
+    // 生成选择列表
+    // this.data.parkGetcolumns = Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k)
+    this.setData({
+      showMoreBtn: true,
+      parkGetcolumns: Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k + 1)
     })
   },
 
@@ -158,9 +237,12 @@ Page({
    * 关闭popup
    */
   onClose() {
-    this.setData({ showPic: false });
-    this.setData({ showPicker: false })
-    this.setData({ showOption: false })
+    this.setData({ 
+      showPic: false,
+      showPicker: false,
+      showOption: false,
+      showMoreBtn: false
+    });
   },
 
   /**
@@ -186,6 +268,18 @@ Page({
   },
 
   /**
+   * 部分完成确认
+   */
+  parkGetconfirmPicker(event) {
+
+    const { value } = event.detail
+    this.setData({
+      showMoreBtn: false
+    })
+    this.setParkGet(value)
+  },
+
+  /**
    * 打开操作 
    */
   onClickOption() {
@@ -196,7 +290,9 @@ Page({
    * 取消操作
    */
   cancelOption() {
-    this.setData({ showOption: false })
+    this.setData({ 
+      showOption: false
+    })
   },
 
   /**
