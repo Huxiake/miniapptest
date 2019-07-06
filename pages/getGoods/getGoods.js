@@ -124,22 +124,25 @@ Page({
    * 设置为部分完成状态
    */
   setParkGet(getAmount) {
-    console.log(this.data.selectArr)
-    wx.request({
-      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markParkGet?id=' + this.data.selectArr + '&getAmount=' + getAmount,
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.data.jwt
-      },
-      success: res => {
-        var dataJSON = res.data
-        if (dataJSON.success) {
-          console.log('1111')
-          this.getList()
-        }
-      }
-    })
+    console.log('data', this.data.selectArr)
+    console.log('getAmount', getAmount)
+    const data = qs.stringify(this.data.selectArr)
+    console.log(data)
+    // wx.request({
+    //   url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markParkGet?id=' + data + '&getAmount=' + getAmount,
+    //   method: 'POST',
+    //   header: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer ' + this.data.jwt
+    //   },
+    //   success: res => {
+    //     var dataJSON = res.data
+    //     if (dataJSON.success) {
+    //       console.log('1111')
+    //       this.getList()
+    //     }
+    //   }
+    // })
   },
 
   /**
@@ -221,14 +224,12 @@ Page({
    */
   onClickMore(e) {
     var idArr = []
-    console.log(e)
     idArr.push(e.currentTarget.dataset.item.Id)
     this.data.selectArr = idArr
-    console.log(this.data.selectArr)
-    // 生成选择列表
-    // this.data.parkGetcolumns = Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k)
     this.setData({
       showMoreBtn: true,
+      selectArr: idArr,
+      // 生成选择列表
       parkGetcolumns: Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k + 1)
     })
   },
