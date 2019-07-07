@@ -17,13 +17,14 @@ Page({
     picUrl: '',
     searchVal: '',
     pickerVal: '全部',
-    columns: ['全部','金富丽','女人街','大西豪','大时代','国投','国大','国润'],
-    columnsKey:['','A','B','C','D','E','F','G'],
+    columns: ['全部','国润','国投','非凡','柏美','泓发','宝华','女人街','国大','大时代','佰润','三晟','大西豪','跨客城','国泰','新金马','金富丽','天福居'],
+    columnsKey:['','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R'],
     parkGetcolumns: [],
     result: '',
     listData: [],
     selectArr: [],
     selectObj: {},
+    selectMoreId: '',
     conditions: {
       market: '',
       GoodsStatus: 'pending'
@@ -124,25 +125,25 @@ Page({
    * 设置为部分完成状态
    */
   setParkGet(getAmount) {
-    console.log('data', this.data.selectArr)
-    console.log('getAmount', getAmount)
-    const data = qs.stringify(this.data.selectArr)
-    console.log(data)
-    // wx.request({
-    //   url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markParkGet?id=' + data + '&getAmount=' + getAmount,
-    //   method: 'POST',
-    //   header: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'Bearer ' + this.data.jwt
-    //   },
-    //   success: res => {
-    //     var dataJSON = res.data
-    //     if (dataJSON.success) {
-    //       console.log('1111')
-    //       this.getList()
-    //     }
-    //   }
-    // })
+    // console.log('data', this.data.selectMoreId)
+    // console.log('getAmount', getAmount)
+    // const data = qs.stringify(this.data.selectArr)
+    // console.log(data)
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markParkGet?id=[' + this.data.selectMoreId + ']&getAmount=' + getAmount,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
+      success: res => {
+        var dataJSON = res.data
+        if (dataJSON.success) {
+          console.log('1111')
+          this.getList()
+        }
+      }
+    })
   },
 
   /**
@@ -223,12 +224,9 @@ Page({
    * 点击更多
    */
   onClickMore(e) {
-    var idArr = []
-    idArr.push(e.currentTarget.dataset.item.Id)
-    this.data.selectArr = idArr
     this.setData({
       showMoreBtn: true,
-      selectArr: idArr,
+      selectMoreId: e.currentTarget.dataset.item.Id,
       // 生成选择列表
       parkGetcolumns: Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k + 1)
     })
