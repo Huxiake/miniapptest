@@ -19,20 +19,26 @@ Page({
     wx.login({
       success(res) {
         if (res.code) {
-          //发起网络请求
-          wx.request({
-            url: 'https://onekeyErp.yijiankuajing.com/api/mp/login?code=' + res.code,
-            success: res => {
-              console.log(res)
-              var dataJSON = res.data
-              if (dataJSON.success) {
-                wx.setStorage({
-                  key: "jwt",
-                  data: dataJSON.data.jwt
-                })
-              }
-            }
+          wx.setStorage({
+            key: "jwt",
+            // data: dataJSON.data.jwt
+            data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjQ2NTk2ODksImxvZ2lucGhvbmUiOiIxNTkxNTk0MDAzMyJ9.vHQtWbwnoZ1ytXtwJ5qzZIRIXYMIAGwwmcFUEutrmv0'
           })
+          //发起网络请求
+          // wx.request({
+          //   url: 'https://onekeyErp.yijiankuajing.com/api/mp/login?code=' + res.code,
+          //   success: res => {
+          //     console.log(res)
+          //     var dataJSON = res.data
+          //     if (dataJSON.success) {
+          //       wx.setStorage({
+          //         key: "jwt",
+          //         // data: dataJSON.data.jwt
+          //         data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjQ2NTk2ODksImxvZ2lucGhvbmUiOiIxNTkxNTk0MDAzMyJ9.vHQtWbwnoZ1ytXtwJ5qzZIRIXYMIAGwwmcFUEutrmv0'
+          //       })
+          //     }
+          //   }
+          // })
         } else {
           console.log('登录失败！' + res.errMsg)
         }
