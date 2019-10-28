@@ -16,6 +16,8 @@
     "van-tag": "../../modules/vant/tag/index",
     "van-icon": "../../modules/vant/icon/index",
     "van-stepper": "../../modules/vant/stepper/index",
-    "van-panel": "../../modules/vant/panel/index"
+    "van-panel": "../../modules/vant/panel/index",
+    "van-dialog": "../../modules/vant/dialog/index",
+    "van-switch": "../../modules/vant/switch/index"
   }
 }

@@ -1,3 +1,5 @@
+import Dialog from '../../modules/vant/dialog/dialog';
+
 // pages/getGoods/getGoods.js
 const util = require('../../utils/util.js')
 const qs = require('qs')
@@ -10,13 +12,14 @@ Page({
   data: {
     jwt: '',
     showPic: false,
-    showPicker: false,
+    showMarketPicker: false,
     showOption: false,
     showMoreBtn: false,
+    showLackInfo: false,
     selAll: false,
     picUrl: '',
     searchVal: '',
-    pickerVal: '全部',
+    pickerMarketVal: '全部',
     columns: ['全部','A国润','B国马','C国投','D非凡','E柏美','F泓发','G宝华','H女人街','I国大','J大时代','K佰润','L三晟','M大西豪','N跨客城','O国泰','P新金马','Q金富丽','T天福居'],
     columnsKey:['','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','T'],
     parkGetcolumns: [],
@@ -27,8 +30,11 @@ Page({
     selectMoreId: '',
     conditions: {
       market: '',
+      offset: 0,
+      limit: 500,
       GoodsStatus: 'pending'
-    }
+    },
+    lackInfo: ''
   },
 
   /**
@@ -80,10 +86,36 @@ Page({
    * 设置为缺货状态
    */
   setLack(ids) {
+    console.log(this.data.lackInfo)
     var data = '[' + ids.join(',') + ']'
     console.log(data)
     wx.request({
-      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markLack?id=' + data,
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markLack?id=' + data + '&lackRemark=' + this.data.lackInfo,
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.data.jwt
+      },
+      success: res => {
+        var dataJSON = res.data
+        if (dataJSON.success) {
+          this.getList()
+        }
+      }
+    })
+  },
+
+  inputLackInfo(e) {
+    this.setData({
+      lackInfo: e.detail.value
+    })
+  },
+
+  submitLack() {
+    var data = '[' + this.data.selectArr.join(',') + ']'
+    console.log(data)
+    wx.request({
+      url: 'https://onekeyErp.yijiankuajing.com/v1/getgoods/markLack?id=' + data + '&lackRemark=' + this.data.lackInfo,
       method: 'POST',
       header: {
         'Content-Type': 'application/json',
@@ -190,46 +222,59 @@ Page({
     if (typeof (e.target.dataset.id) != 'undefined') {
       idArr.push(e.currentTarget.dataset.id)
     } else {
-      console.log('在这里', this.data.selectArr)
       idArr = this.data.selectArr
     }
-      this.setLack(idArr)
-      this.setData({
-        showOption: false
-      })
+    // this.setLack(idArr)
+    this.setData({
+      selectArr: idArr,
+      showLackInfo: true,
+      showOption: false
+    })
   },
 
   /**
    * 点击完成
    */
   onClickGet(e) {
-    var idArr = []
-    if (typeof (e.target.dataset.id) != 'undefined') {
-      idArr.push(e.currentTarget.dataset.id)
-    } else {
-      console.log('在这里', this.data.selectArr)
-      idArr = this.data.selectArr
-    }
-    this.setGet(idArr)
-    this.setData({
-      showOption: false,
-      selectArr: [],
-      selectObj: {},
-      selAll: !this.data.selAll
-    })
-    console.log('selectArr', this.data.selectArr)
+    Dialog.confirm({
+      // title: '请确认',
+      message: '是否确认完成拿货'
+    }).then(() => {
+      // on confirm
+      console.log('确认完成')
+      var idArr = []
+      if (typeof (e.target.dataset.id) != 'undefined') {
+        idArr.push(e.currentTarget.dataset.id)
+      } else {
+        console.log('在这里', this.data.selectArr)
+        idArr = this.data.selectArr
+      }
+      this.setGet(idArr)
+      this.setData({
+        showOption: false,
+        selectArr: [],
+        selectObj: {},
+        selAll: !this.data.selAll
+      })
+      // console.log('selectArr', this.data.selectArr)
+    }).catch(() => {
+      console.log('取消')
+      // on cancel
+    });
   },
 
   /**
    * 点击更多
    */
   onClickMore(e) {
-    this.setData({
-      showMoreBtn: true,
-      selectMoreId: e.currentTarget.dataset.item.Id,
-      // 生成选择列表
-      parkGetcolumns: Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k + 1)
-    })
+    if (e.currentTarget.dataset.item.Amount > 1) {
+      this.setData({
+        showMoreBtn: true,
+        selectMoreId: e.currentTarget.dataset.item.Id,
+        // 生成选择列表
+        parkGetcolumns: Array.from(Array(Number(e.currentTarget.dataset.item.Amount)), (v, k) => k + 1)
+      })
+    }
   },
 
   /**
@@ -238,7 +283,7 @@ Page({
   onClose() {
     this.setData({ 
       showPic: false,
-      showPicker: false,
+      showMarketPicker: false,
       showOption: false,
       showMoreBtn: false
     });
@@ -247,8 +292,9 @@ Page({
   /**
    * 打开选择器
    */
-  onClickpicker() {
-    this.setData({ showPicker: true })
+  onClickMarketPicker() {
+    console.log('this')
+    this.setData({ showMarketPicker: true })
   },
 
   /**
@@ -258,8 +304,8 @@ Page({
     console.log(event)
     const { value, index } = event.detail
     this.setData({ 
-      showPicker: false,
-      pickerVal: value
+      showMarketPicker: false,
+      pickerMarketVal: value
     })
     this.data.conditions.market = this.data.columnsKey[index]
     console.log(this.data.conditions.market)

@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/getGoods/getGoods",
-    "pages/personalCenter/personalCenter"
+    "pages/personalCenter/personalCenter",
+    "pages/login/login"
   ],
   "window": {
     "backgroundTextStyle": "light",

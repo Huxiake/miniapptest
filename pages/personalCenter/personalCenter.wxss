@@ -1,1 +1,25 @@
 /* pages/personalCenter/personalCenter.wxss */
+.perHeader {
+  height: 180px;
+  background-color: #5cadff;
+}
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #FFF;
+}
+
+.usermotto {
+  margin-top: 200px;
+}

@@ -1,0 +1,7 @@
+/* pages/login/login.wxss */
+.loginView {
+  margin-top: 40%;
+}
+.loginbtn {
+  margin-top: 10px;
+}

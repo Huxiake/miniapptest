@@ -4,7 +4,7 @@
   <view class="top-tool">
     <van-row>
       <van-col span="16">
-        <van-cell value="{{ pickerVal }}" title="市场" bind:click="onClickpicker" class="pickerCell" />
+        <van-cell value="{{ pickerMarketVal }}" title="市场" bind:click="onClickMarketPicker" class="pickerCell" />
       </van-col>
       <van-col>
         <van-button size="small" class="selAll-btn" bindtap="selectAll">全选</van-button>
@@ -38,7 +38,7 @@
       slot="desc">
       <van-tag>{{ item.OrderNum }}</van-tag>
     </view>
-    <view slot="footer">
+    <view wx:if="{{ item.IsLack !== 1}}" slot="footer">
       <van-button data-id="{{ item.Id }}" plain hairline type="danger" size="mini" style="margin-right:5px" bindtap="onClickLack">缺货</van-button>
       <van-button data-id="{{ item.Id }}" size="mini" style="margin-right:5px" bindtap="onClickGet">完成</van-button>
       <van-button data-item="{{ item }}" size="mini" bindtap="onClickMore">更多</van-button>
@@ -52,7 +52,7 @@
   </van-popup>
 
   <!-- 市场选择弹出层 -->
-  <van-popup show="{{ showPicker }}" position="bottom" bind:close="onClose">
+  <van-popup show="{{ showMarketPicker }}" position="bottom" bind:close="onClose">
     <van-picker columns="{{ columns }}" show-toolbar title="选择市场" bind:cancel="onClose" bind:confirm="confirmPicker" />
   </van-popup>
 
@@ -68,7 +68,21 @@
 
   <!-- 更多按钮弹出层 -->
   <van-popup show="{{ showMoreBtn }}" position="bottom" bind:close="onClose">   
-    <van-picker columns="{{ parkGetcolumns }}" show-toolbar title="部分完成" bind:cancel="onClose" bind:confirm="parkGetconfirmPicker" />
+    <van-picker columns="{{ parkGetcolumns }}" show-toolbar title="已拿件数" bind:cancel="onClose" bind:confirm="parkGetconfirmPicker" />
   </van-popup>
 
+  <!-- 完成确认弹框 -->
+  <van-dialog id="van-dialog" />
+
+  <!-- 缺货弹出层 -->
+  <van-dialog
+    use-slot
+    title="缺货备注"
+    show="{{ showLackInfo }}"
+    show-cancel-button
+    bind:confirm="submitLack"
+    bind:close="onClose"
+  >
+    <input bindinput="inputLackInfo" style="margin: 0 10px;" auto-focus placeholder="请输入缺货备注"/>
+  </van-dialog>
 </view>

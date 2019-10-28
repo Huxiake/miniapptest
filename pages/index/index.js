@@ -22,7 +22,7 @@ Page({
           wx.setStorage({
             key: "jwt",
             // data: dataJSON.data.jwt
-            data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjQ2NTk2ODksImxvZ2lucGhvbmUiOiIxNTkxNTk0MDAzMyJ9.vHQtWbwnoZ1ytXtwJ5qzZIRIXYMIAGwwmcFUEutrmv0'
+            data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQxOTQ0ODIsImxvZ2lucGhvbmUiOiIxNTkxNTk0MDAzMyJ9.EMsF-1UqtdGE7ezOhC1XZZAlkCoa1Z6mALcqTJ-m12s'
           })
           //发起网络请求
           // wx.request({
